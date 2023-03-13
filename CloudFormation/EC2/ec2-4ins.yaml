@@ -1,0 +1,128 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Resources:
+  NewKeyPair:
+    Type: 'AWS::EC2::KeyPair'
+    Properties:
+      KeyName: MyKeyPair
+      
+  TestSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: TEST-SecurityGroup
+      GroupDescription: TEST-SecurityGroup
+      VpcId: !ImportValue VPCName
+      SecurityGroupIngress:
+      - 
+        IpProtocol: tcp
+        CidrIp: 0.0.0.0/0
+        FromPort: "22"
+        ToPort: "22"
+        
+  EC2Instance01:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-09ebacdc178ae23b7
+      KeyName: !Ref NewKeyPair
+      InstanceType: t2.micro
+      InstanceInitiatedShutdownBehavior: stop
+      Tenancy: default
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          SubnetId: !ImportValue SubnetName
+          GroupSet:
+            - !Ref TestSecurityGroup
+          PrivateIpAddress: 10.1.1.10
+      Tags:
+          - Key: Name
+            Value: test_linux_instance
+      BlockDeviceMappings:  
+        - DeviceName: /dev/xvda
+          Ebs:
+            DeleteOnTermination: true 
+            VolumeType: gp2
+            VolumeSize: 10
+      UserData: !Base64 |
+        sudo hostnamectl set-hostname EC2Instance01
+
+  EC2Instance02:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-09ebacdc178ae23b7
+      KeyName: !Ref NewKeyPair
+      InstanceType: t2.micro
+      InstanceInitiatedShutdownBehavior: stop
+      Tenancy: default
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          SubnetId: !ImportValue SubnetName
+          GroupSet:
+            - !Ref TestSecurityGroup
+          PrivateIpAddress: 10.1.1.11
+      Tags:
+          - Key: Name
+            Value: test_linux_instance
+      BlockDeviceMappings:  
+        - DeviceName: /dev/xvda
+          Ebs:
+            DeleteOnTermination: true 
+            VolumeType: gp2
+            VolumeSize: 10
+      UserData: !Base64 |
+        sudo hostnamectl set-hostname EC2Instance02
+
+  EC2Instance03:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-09ebacdc178ae23b7
+      KeyName: !Ref NewKeyPair
+      InstanceType: t2.micro
+      InstanceInitiatedShutdownBehavior: stop
+      Tenancy: default
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          SubnetId: !ImportValue SubnetName
+          GroupSet:
+            - !Ref TestSecurityGroup
+          PrivateIpAddress: 10.1.1.12
+      Tags:
+          - Key: Name
+            Value: test_linux_instance
+      BlockDeviceMappings:  
+        - DeviceName: /dev/xvda
+          Ebs:
+            DeleteOnTermination: true 
+            VolumeType: gp2
+            VolumeSize: 10
+      UserData: !Base64 |
+        sudo hostnamectl set-hostname EC2Instance03
+
+  EC2Instance04:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-09ebacdc178ae23b7
+      KeyName: !Ref NewKeyPair
+      InstanceType: t2.micro
+      InstanceInitiatedShutdownBehavior: stop
+      Tenancy: default
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          SubnetId: !ImportValue SubnetName
+          GroupSet:
+            - !Ref TestSecurityGroup
+          PrivateIpAddress: 10.1.1.13
+      Tags:
+          - Key: Name
+            Value: test_linux_instance
+      BlockDeviceMappings:  
+        - DeviceName: /dev/xvda
+          Ebs:
+            DeleteOnTermination: true 
+            VolumeType: gp2
+            VolumeSize: 10
+      UserData: !Base64 |
+        sudo hostnamectl set-hostname EC2Instance04
